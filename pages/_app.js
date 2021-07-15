@@ -12,7 +12,12 @@ const GlobalStyle = createGlobalStyle`
   body {
     box-sizing: border-box;
     font-family: sans-serif;
-    background-color: #D9E6F6;
+    background-color: #B0E0E6;
+    background-image: url("https://wallpaperaccess.com/full/547813.png");
+    background-repeat: repeat;
+    background-position: center top;
+    box-sizing: border-box;
+    background-size: 100%;
   }
 
   #__next{

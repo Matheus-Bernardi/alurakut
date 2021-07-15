@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Box = styled.div`
 
-  background: #ffffff;
+  background: rgb(255, 255, 255, 0.7);
   border-radius: 8px;
   
   padding: 16px;
