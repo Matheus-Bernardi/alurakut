@@ -33,7 +33,7 @@ function ProfileRelationsBox(propriedades){
           return (
             <li id={itemAtual.id}  key={itemAtual.id}>
               <a href={itemAtual.url}>
-                <img src={itemAtual.image}/>
+                <img src={itemAtual.image_url}/>
                 <span>{itemAtual.title}</span>
               </a>
             </li>
@@ -47,44 +47,7 @@ function ProfileRelationsBox(propriedades){
 export default function Home() {
 
   const gitHubUser = 'Matheus-bernardi';
-  const [comunidades, setComunidades] = React.useState([{
-    id: '1',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg',
-    url: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
-  },
-  {
-    id: '2',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://picsum.photos/300/200',
-    url: 'https://picsum.photos/300/200'
-
-  },
-  {
-    id: '3',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://picsum.photos/300/300',
-    url: 'https://picsum.photos/300/300'
-  
-  },
-  {
-    id: '4',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://picsum.photos/200/200',
-    url: 'https://picsum.photos/200/200'
-  },
-  {
-    id: '5',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://picsum.photos/400/400',
-    url: 'https://picsum.photos/400/400'
-  },
-  {
-    id: '6',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://picsum.photos/300/400',
-    url: 'https://picsum.photos/300/400'
-  }]);
+  const [comunidades, setComunidades] = React.useState([]);
   // const comunidades = comunidades[0];
   // const alteradorDeComunidades = comunidades[1];
   console.log(comunidades);
@@ -104,11 +67,31 @@ export default function Home() {
       return respostaDoServidor.json();
     })
     .then(function (respostaCompleta){
-      for (var ix = 0; ix <6; ix++){
-        console.log(respostaCompleta);
-      }
-      
       setSeguidores(respostaCompleta);
+    })
+
+    //API GraphQL
+    fetch('https://graphql.datocms.com/' , {
+      method: 'POST',
+      headers: {
+        'Authorization': 'a343f2dc625823535969c6aad8d07e' ,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({'query': `query {
+        allCommunities {
+          id
+          title
+          imageUrl
+          url
+          creatorslug
+        }
+      }` })
+    })
+    .then((response) => response.json()) // Pega o retorno do response.json() e já retorna
+    .then((respostaCompleta) => {
+      const comunidadesDato = respostaCompleta.data.allCommunities;
+      setComunidades(comunidadesDato)
     })
   }, [])
 
@@ -139,15 +122,26 @@ export default function Home() {
               console.log("Campo:", dadosDoForm.get('url'));
 
               const comunidade = {
-                id: new Date().toISOString(),
                 title: dadosDoForm.get('title'),
-                image: dadosDoForm.get('image'),
+                image_url: dadosDoForm.get('image'),
                 url: dadosDoForm.get('url'),
+                creatorslug: gitHubUser,
               }
-              if (comunidades.length != 6){
+
+              fetch('/api/comunidades', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(comunidade)
+              })
+              .then(async (response) => {
+                const dados = await response.json();
+                console.log(dados);
+                const comunidade = dados.registroCriado;
                 const comunidadesAtualizadas = [...comunidades, comunidade];
                 setComunidades(comunidadesAtualizadas);
-              }
+              })
             }}>
               <div>
                 <input 
@@ -188,9 +182,9 @@ export default function Home() {
             <ul>
               {comunidades.map((itemAtual) => {
                 return (
-                  <li id={itemAtual.id}  key={itemAtual.id}>
+                  <li key={itemAtual.id}>
                     <a href={itemAtual.url}>
-                      <img src={itemAtual.image}/>
+                      <img src={itemAtual.imageUrl}/>
                       <span>{itemAtual.title}</span>
                     </a>
                   </li>

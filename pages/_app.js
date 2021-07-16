@@ -16,8 +16,8 @@ const GlobalStyle = createGlobalStyle`
     background-image: url("https://wallpaperaccess.com/full/547813.png");
     background-repeat: repeat;
     background-position: center top;
+    background-size: cover;
     box-sizing: border-box;
-    background-size: 100%;
   }
 
   #__next{
