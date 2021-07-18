@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     font-family: sans-serif;
     background-color: #B0E0E6;
-    background-image: url("https://wallpaperaccess.com/full/547813.png");
+    background-image: url("https://i.pinimg.com/originals/b4/63/8a/b4638aa66c9882cbb725d1adf0fed6b0.jpg");
     background-repeat: repeat;
     background-position: center top;
     background-size: cover;

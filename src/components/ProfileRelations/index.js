@@ -3,6 +3,13 @@ import Box from '../Box';
 
 export const ProfileRelationsBoxWrapper = styled(Box)`
 
+  background-color: rgb(0,0,0,0.7);
+
+  .smallTitle{
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFFFFF;
+  }
   ul {
     display: grid;
     grid-gap: 8px;
